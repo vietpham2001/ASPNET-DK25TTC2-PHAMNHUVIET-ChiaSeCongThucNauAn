@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37314.3 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeShare", "RecipeShare.csproj", "{1C3ABD20-8964-4989-83E4-3C4F7DD1319F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C3ABD20-8964-4989-83E4-3C4F7DD1319F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C3ABD20-8964-4989-83E4-3C4F7DD1319F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C3ABD20-8964-4989-83E4-3C4F7DD1319F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C3ABD20-8964-4989-83E4-3C4F7DD1319F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7717B075-B836-4C43-8F37-7BEDBA2E44B6}
+	EndGlobalSection
+EndGlobal
