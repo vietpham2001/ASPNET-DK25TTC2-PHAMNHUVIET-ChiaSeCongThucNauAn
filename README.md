@@ -30,7 +30,7 @@ RecipeShare là website cho phép người dùng chia sẻ và khám phá các c
 ## ⚙️ Chức năng chính
 
 - [x] Thiết kế cơ sở dữ liệu (5 bảng: Users, Categories, Recipes, Comments, Votes)
-- [ ] Đăng ký / Đăng nhập / Phân quyền người dùng
+- [x] Đăng ký / Đăng nhập / Phân quyền người dùng
 - [ ] Đăng, sửa, xóa công thức nấu ăn (CRUD) kèm upload hình ảnh
 - [ ] Tìm kiếm và lọc công thức theo danh mục
 - [ ] Bình luận trên công thức
@@ -67,7 +67,14 @@ CSDL `RecipeShareDB` được tạo tự động bằng EF Core Code-First, gồ
 
 Ràng buộc đặc biệt: mỗi user chỉ được vote **1 lần** cho mỗi công thức (unique index trên cặp `UserId + RecipeId`).
 
+## 👤 Tài khoản test
+
+| Tên đăng nhập | Mật khẩu | Ghi chú |
+|---|---|---|
+| user1 | 123456 | Tài khoản người dùng thường |
+
 ## 🚀 Hướng dẫn cài đặt và chạy
+
 
 ### Yêu cầu môi trường
 
@@ -95,7 +102,7 @@ Ràng buộc đặc biệt: mỗi user chỉ được vote **1 lần** cho mỗi
 | Tuần | Nội dung | Trạng thái |
 |---|---|---|
 | 1 | Khởi tạo project, thiết kế CSDL, EF Core, Migration | ✅ Hoàn thành |
-| 2 | Đăng ký / Đăng nhập / Phân quyền | 🔄 Đang thực hiện |
-| 3 | CRUD công thức + Tìm kiếm & lọc | ⬜ Chưa bắt đầu |
+| 2 | Đăng ký / Đăng nhập / Phân quyền | ✅ Hoàn thành |
+| 3 | CRUD công thức + Tìm kiếm & lọc | 🔄 Đang thực hiện |
 | 4 | Bình luận + Upvote/Downvote | ⬜ Chưa bắt đầu |
 | 5 | Hoàn thiện giao diện + Báo cáo | ⬜ Chưa bắt đầu |

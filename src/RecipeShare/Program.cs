@@ -1,10 +1,19 @@
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using RecipeShare.Data;
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add services to the container.
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";           // Chưa đăng nhập mà vào trang cấm → tự chuyển tới đây
+        options.AccessDeniedPath = "/Account/AccessDenied"; // Đăng nhập rồi nhưng không đủ quyền → chuyển tới đây
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);  // Cookie sống 7 ngày
+    });
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -21,6 +30,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
