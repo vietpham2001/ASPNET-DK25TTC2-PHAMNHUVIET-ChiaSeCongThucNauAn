@@ -1,0 +1,68 @@
+﻿@model List<RecipeShare.Models.Recipe>
+
+@{
+    ViewData["Title"] = "Công thức nấu ăn";
+}
+
+<div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+    <h2>🍜 Công thức nấu ăn</h2>
+    <a asp-action="Create" class="btn btn-primary">+ Đăng công thức</a>
+</div>
+
+<!-- Thanh tìm kiếm + lọc -->
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-5">
+        <input type="text" name="search" value="@ViewBag.Search" class="form-control"
+               placeholder="Tìm món ăn..." />
+    </div>
+    <div class="col-md-4">
+        <select name="categoryId" class="form-select">
+            <option value="0">— Tất cả danh mục —</option>
+            @foreach (var cat in ViewBag.Categories)
+            {
+                <option value="@cat.Id" selected="@(ViewBag.CategoryId == cat.Id)">@cat.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-3">
+        <button type="submit" class="btn btn-outline-primary w-100">🔍 Tìm kiếm</button>
+    </div>
+</form>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">Chưa có công thức nào. Hãy là người đầu tiên chia sẻ!</div>
+}
+else
+{
+    <div class="row">
+        @foreach (var recipe in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    @if (!string.IsNullOrEmpty(recipe.ImageUrl))
+                    {
+                        <img src="@recipe.ImageUrl" class="card-img-top" style="height:200px; object-fit:cover;" alt="@recipe.Title" />
+                    }
+                    else
+                    {
+                        <div class="bg-light d-flex align-items-center justify-content-center" style="height:200px;">
+                            <span style="font-size:3rem;">🍽</span>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <span class="badge bg-secondary mb-2">@recipe.Category.Name</span>
+                        <h5 class="card-title">@recipe.Title</h5>
+                        <p class="card-text text-muted" style="display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
+                            @recipe.Description
+                        </p>
+                    </div>
+                    <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+                        <small class="text-muted">👤 @recipe.User.FullName</small>
+                        <a asp-action="Details" asp-route-id="@recipe.Id" class="btn btn-sm btn-outline-primary">Xem</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

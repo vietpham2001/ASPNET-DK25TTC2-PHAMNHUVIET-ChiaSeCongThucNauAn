@@ -34,6 +34,16 @@ namespace RecipeShare.Data
                 .HasOne(v => v.User)
                 .WithMany(u => u.Votes)
                 .OnDelete(DeleteBehavior.Restrict);
+            // Seed dữ liệu danh mục có sẵn
+            modelBuilder.Entity<Category>().HasData(
+                new Category { Id = 1, Name = "Món chính", Description = "Các món ăn chính trong bữa cơm" },
+                new Category { Id = 2, Name = "Món khai vị", Description = "Gỏi, salad, súp khai vị" },
+                new Category { Id = 3, Name = "Tráng miệng", Description = "Chè, bánh ngọt, trái cây" },
+                new Category { Id = 4, Name = "Đồ uống", Description = "Sinh tố, nước ép, trà, cà phê" },
+                new Category { Id = 5, Name = "Ăn vặt", Description = "Món ăn chơi, ăn nhẹ" },
+                new Category { Id = 6, Name = "Món chay", Description = "Các món thuần chay" }
+            );
+
         }
     }
 }

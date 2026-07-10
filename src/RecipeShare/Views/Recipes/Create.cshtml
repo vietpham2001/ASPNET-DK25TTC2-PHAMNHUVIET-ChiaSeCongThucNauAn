@@ -1,0 +1,68 @@
+﻿@model RecipeShare.Models.ViewModels.RecipeFormViewModel
+
+@{
+    ViewData["Title"] = "Đăng công thức";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-body p-4">
+                <h3 class="mb-4">🍳 Đăng công thức mới</h3>
+
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label"></label>
+                        <input asp-for="Title" class="form-control" placeholder="VD: Phở bò Hà Nội" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="2"
+                                  placeholder="Giới thiệu ngắn gọn về món ăn..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CategoryId" class="form-label"></label>
+                        <select asp-for="CategoryId" class="form-select">
+                            @foreach (var cat in ViewBag.Categories)
+                            {
+                                <option value="@cat.Id">@cat.Name</option>
+                            }
+                        </select>
+                    </div>                  
+
+                    <div class="mb-3">
+                        <label asp-for="Ingredients" class="form-label"></label>
+                        <textarea asp-for="Ingredients" class="form-control" rows="5"
+                                  placeholder="500g thịt bò&#10;1 củ hành tây&#10;2 muỗng nước mắm..."></textarea>
+                        <span asp-validation-for="Ingredients" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Instructions" class="form-label"></label>
+                        <textarea asp-for="Instructions" class="form-control" rows="7"
+                                  placeholder="Bước 1: ...&#10;Bước 2: ..."></textarea>
+                        <span asp-validation-for="Instructions" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ImageFile" class="form-label"></label>
+                        <input asp-for="ImageFile" class="form-control" type="file" accept="image/*" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Đăng công thức</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Hủy</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

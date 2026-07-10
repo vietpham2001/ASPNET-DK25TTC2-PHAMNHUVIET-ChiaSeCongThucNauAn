@@ -9,9 +9,6 @@ namespace RecipeShare.Models
         public string Description { get; set; } = string.Empty;
         public string Ingredients { get; set; } = string.Empty;
         public string Instructions { get; set; } = string.Empty;
-        public int PrepTime { get; set; }
-        public int CookTime { get; set; }
-        public int Servings { get; set; }
         public string? ImageUrl { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }

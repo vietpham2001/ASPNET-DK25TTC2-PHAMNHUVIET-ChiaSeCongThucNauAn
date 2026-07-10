@@ -31,8 +31,8 @@ RecipeShare là website cho phép người dùng chia sẻ và khám phá các c
 
 - [x] Thiết kế cơ sở dữ liệu (5 bảng: Users, Categories, Recipes, Comments, Votes)
 - [x] Đăng ký / Đăng nhập / Phân quyền người dùng
-- [ ] Đăng, sửa, xóa công thức nấu ăn (CRUD) kèm upload hình ảnh
-- [ ] Tìm kiếm và lọc công thức theo danh mục
+- [x] Đăng, sửa, xóa công thức nấu ăn (CRUD) kèm upload hình ảnh
+- [x] Tìm kiếm và lọc công thức theo danh mục
 - [ ] Bình luận trên công thức
 - [ ] Upvote / Downvote công thức, xếp hạng công thức nổi bật
 
@@ -72,6 +72,7 @@ Ràng buộc đặc biệt: mỗi user chỉ được vote **1 lần** cho mỗi
 | Tên đăng nhập | Mật khẩu | Ghi chú |
 |---|---|---|
 | user1 | 123456 | Tài khoản người dùng thường |
+| user2 | 123456 | Tài khoản người dùng thường |
 
 ## 🚀 Hướng dẫn cài đặt và chạy
 
@@ -103,6 +104,6 @@ Ràng buộc đặc biệt: mỗi user chỉ được vote **1 lần** cho mỗi
 |---|---|---|
 | 1 | Khởi tạo project, thiết kế CSDL, EF Core, Migration | ✅ Hoàn thành |
 | 2 | Đăng ký / Đăng nhập / Phân quyền | ✅ Hoàn thành |
-| 3 | CRUD công thức + Tìm kiếm & lọc | 🔄 Đang thực hiện |
-| 4 | Bình luận + Upvote/Downvote | ⬜ Chưa bắt đầu |
+| 3 | CRUD công thức + Tìm kiếm & lọc | ✅ Hoàn thành |
+| 4 | Bình luận + Upvote/Downvote | 🔄 Đang thực hiện |
 | 5 | Hoàn thiện giao diện + Báo cáo | ⬜ Chưa bắt đầu |
