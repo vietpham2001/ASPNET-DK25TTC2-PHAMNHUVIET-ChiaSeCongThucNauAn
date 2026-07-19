@@ -24,8 +24,10 @@ RecipeShare là website cho phép người dùng chia sẻ và khám phá các c
 | ORM | Entity Framework Core 8.0.11 (Code-First) |
 | Cơ sở dữ liệu | SQL Server |
 | Frontend | Razor Views, Bootstrap 5 |
+| Tương tác động | JavaScript (Fetch API / AJAX) |
 | IDE | Visual Studio 2022 |
 | Quản lý mã nguồn | Git + GitHub |
+
 
 ## ⚙️ Chức năng chính
 
@@ -33,8 +35,8 @@ RecipeShare là website cho phép người dùng chia sẻ và khám phá các c
 - [x] Đăng ký / Đăng nhập / Phân quyền người dùng
 - [x] Đăng, sửa, xóa công thức nấu ăn (CRUD) kèm upload hình ảnh
 - [x] Tìm kiếm và lọc công thức theo danh mục
-- [ ] Bình luận trên công thức
-- [ ] Upvote / Downvote công thức, xếp hạng công thức nổi bật
+- [x] Bình luận trên công thức
+- [x] Upvote / Downvote công thức, xếp hạng công thức nổi bật
 
 *(Các ô tick sẽ được cập nhật theo tiến độ từng tuần)*
 
@@ -105,5 +107,5 @@ Ràng buộc đặc biệt: mỗi user chỉ được vote **1 lần** cho mỗi
 | 1 | Khởi tạo project, thiết kế CSDL, EF Core, Migration | ✅ Hoàn thành |
 | 2 | Đăng ký / Đăng nhập / Phân quyền | ✅ Hoàn thành |
 | 3 | CRUD công thức + Tìm kiếm & lọc | ✅ Hoàn thành |
-| 4 | Bình luận + Upvote/Downvote | 🔄 Đang thực hiện |
-| 5 | Hoàn thiện giao diện + Báo cáo | ⬜ Chưa bắt đầu |
+| 4 | Bình luận + Upvote/Downvote | ✅ Hoàn thành |
+| 5 | Hoàn thiện giao diện + Báo cáo | 🔄 Đang thực hiện |

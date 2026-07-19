@@ -24,7 +24,22 @@
     </div>
     <div class="col-md-7">
         <span class="badge bg-secondary">@Model.Category.Name</span>
-        <h2 class="mt-2">@Model.Title</h2>
+        
+        <div class="d-flex align-items-center gap-3 mt-2">
+            <div class="text-center">
+                <button id="btn-upvote" class="btn btn-sm @(ViewBag.UserVote == "up" ? "btn-warning" : "btn-outline-secondary")">▲</button>
+                <div id="vote-score" class="fw-bold my-1">@ViewBag.Score</div>
+                <button id="btn-downvote" class="btn btn-sm @(ViewBag.UserVote == "down" ? "btn-primary" : "btn-outline-secondary")">▼</button>
+            </div>
+            <h2 class="mb-0">@Model.Title</h2>
+        </div>
+
+        <form id="vote-form" class="d-none">
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="vote-recipe-id" value="@Model.Id" />
+            <input type="hidden" id="vote-logged-in" value="@(User.Identity != null && User.Identity.IsAuthenticated ? "1" : "0")" />
+        </form>
+
         <p class="text-muted">@Model.Description</p>
         <p>
             👤 Đăng bởi <strong>@Model.User.FullName</strong>
@@ -52,6 +67,63 @@
     </div>
 </div>
 
+<hr class="mt-5" />
+<div class="row">
+    <div class="col-md-8">
+        <h4>💬 Bình luận (<span id="comment-count">@Model.Comments.Count</span>)</h4>
+
+        <div id="comment-error" class="alert alert-warning d-none"></div>
+
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <form id="comment-form" asp-controller="Comments" asp-action="Create" method="post" class="mb-4">
+                <input type="hidden" name="recipeId" value="@Model.Id" />
+                <div class="mb-2">
+                    <textarea name="content" class="form-control" rows="2"
+                          placeholder="Chia sẻ cảm nhận của bạn về món này..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Gửi bình luận</button>
+            </form>
+        }
+        else
+        {
+            <p class="text-muted">
+                <a asp-controller="Account" asp-action="Login">Đăng nhập</a> để bình luận.
+            </p>
+        }
+
+        <div id="comment-list">
+            @if (Model.Comments.Count == 0)
+            {
+                <p id="no-comment" class="text-muted">Chưa có bình luận nào.</p>
+            }
+            else
+            {
+                @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
+                {
+                    <div class="border rounded p-3 mb-2">
+                        <div class="d-flex justify-content-between">
+                            <strong>@comment.User.FullName</strong>
+                            <small class="text-muted">@comment.CreatedAt.ToString("dd/MM/yyyy HH:mm")</small>
+                        </div>
+                        <p class="mb-1 mt-1">@comment.Content</p>
+
+                        @if (User.Identity != null && User.Identity.IsAuthenticated
+                                        && comment.UserId == int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value))
+                        {
+                            <form asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id"
+                                  method="post" class="d-inline"
+                                  onsubmit="return confirm('Xóa bình luận này?');">
+                                <button type="submit" class="btn btn-link btn-sm text-danger p-0">Xóa</button>
+                            </form>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
 <div class="d-flex gap-2 mt-4 mb-5">
     <a asp-action="Index" class="btn btn-outline-secondary">← Quay lại danh sách</a>
 
@@ -66,3 +138,7 @@
         </form>
     }
 </div>
+
+@section Scripts {
+    <script src="~/js/recipe-details.js" asp-append-version="true"></script>
+}

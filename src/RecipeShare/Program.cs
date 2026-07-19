@@ -35,6 +35,15 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+// Kiểm soát cache: buộc trình duyệt xác thực lại với server, tránh hiện trang phiên cũ
+app.Use(async (context, next) =>
+{
+    context.Response.Headers["Cache-Control"] = "no-cache, must-revalidate";
+    context.Response.Headers["Pragma"] = "no-cache";
+    context.Response.Headers["Expires"] = "0";
+    await next();
+});
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -18,12 +18,13 @@ namespace RecipeShare.Controllers
         }
 
         // Trang danh sách công thức: /Recipes
-        public async Task<IActionResult> Index(string? search, int? categoryId)
+        public async Task<IActionResult> Index(string? search, int? categoryId, string? sort)
         {
             // Bắt đầu bằng "câu truy vấn gốc": lấy công thức kèm thông tin người đăng + danh mục
             var query = _context.Recipes
                 .Include(r => r.User)
                 .Include(r => r.Category)
+                .Include(r => r.Votes)
                 .AsQueryable();
 
             // Nếu có từ khóa tìm kiếm → lọc theo tiêu đề
@@ -39,15 +40,32 @@ namespace RecipeShare.Controllers
             }
 
             // Mới nhất lên đầu
-            var recipes = await query.OrderByDescending(r => r.CreatedAt).ToListAsync();
+            var recipes = sort == "top"
+                ? await query.OrderByDescending(r => r.Votes.Count(v => v.IsUpvote) - r.Votes.Count(v => !v.IsUpvote))
+                             .ThenByDescending(r => r.CreatedAt)
+                             .ToListAsync()
+                : await query.OrderByDescending(r => r.CreatedAt).ToListAsync();
+
+            // Trạng thái vote của người đang xem cho từng công thức (recipeId -> "up"/"down")
+            var myVotes = new Dictionary<int, string>();
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                myVotes = await _context.Votes
+                    .Where(v => v.UserId == userId)
+                    .ToDictionaryAsync(v => v.RecipeId, v => v.IsUpvote ? "up" : "down");
+            }
+            ViewBag.MyVotes = myVotes;
 
             // Gửi kèm dữ liệu cho View: danh sách danh mục (để vẽ dropdown lọc) + giá trị đang lọc
             ViewBag.Categories = await _context.Categories.ToListAsync();
             ViewBag.Search = search;
+            ViewBag.Sort = sort;
             ViewBag.CategoryId = categoryId;
 
             return View(recipes);
         }
+
 
         // Trang chi tiết 1 công thức: /Recipes/Details/5
         public async Task<IActionResult> Details(int id)
@@ -55,11 +73,24 @@ namespace RecipeShare.Controllers
             var recipe = await _context.Recipes
                 .Include(r => r.User)
                 .Include(r => r.Category)
+                .Include(r => r.Comments)
+                    .ThenInclude(c => c.User)
+                .Include(r => r.Votes)
                 .FirstOrDefaultAsync(r => r.Id == id);
 
             if (recipe == null)
             {
                 return NotFound(); // Không có công thức này → trang 404
+            }
+
+            // Tính điểm và trạng thái vote của người đang xem
+            ViewBag.Score = recipe.Votes.Count(v => v.IsUpvote) - recipe.Votes.Count(v => !v.IsUpvote);
+            ViewBag.UserVote = "none";
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                var myVote = recipe.Votes.FirstOrDefault(v => v.UserId == userId);
+                if (myVote != null) ViewBag.UserVote = myVote.IsUpvote ? "up" : "down";
             }
 
             return View(recipe);

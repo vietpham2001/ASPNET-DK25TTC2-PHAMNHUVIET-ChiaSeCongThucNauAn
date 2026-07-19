@@ -11,6 +11,7 @@
 
 <!-- Thanh tìm kiếm + lọc -->
 <form method="get" class="row g-2 mb-4">
+    <input type="hidden" name="sort" value="@ViewBag.Sort" />
     <div class="col-md-5">
         <input type="text" name="search" value="@ViewBag.Search" class="form-control"
                placeholder="Tìm món ăn..." />
@@ -28,6 +29,21 @@
         <button type="submit" class="btn btn-outline-primary w-100">🔍 Tìm kiếm</button>
     </div>
 </form>
+
+<ul class="nav nav-pills mb-3">
+    <li class="nav-item">
+        <a class="nav-link @(ViewBag.Sort != "top" ? "active" : "")"
+           asp-action="Index" asp-route-search="@ViewBag.Search" asp-route-categoryId="@ViewBag.CategoryId">
+            🕐 Mới nhất
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(ViewBag.Sort == "top" ? "active" : "")"
+           asp-action="Index" asp-route-search="@ViewBag.Search" asp-route-categoryId="@ViewBag.CategoryId" asp-route-sort="top">
+            🔥 Nổi bật
+        </a>
+    </li>
+</ul>
 
 @if (Model.Count == 0)
 {
@@ -58,11 +74,37 @@ else
                         </p>
                     </div>
                     <div class="card-footer bg-white d-flex justify-content-between align-items-center">
-                        <small class="text-muted">👤 @recipe.User.FullName</small>
-                        <a asp-action="Details" asp-route-id="@recipe.Id" class="btn btn-sm btn-outline-primary">Xem</a>
+                        <div class="d-flex align-items-center gap-1">
+                            @{
+                                var votes = ViewBag.MyVotes as Dictionary<int, string>;
+                                var myVote = votes != null && votes.ContainsKey(recipe.Id) ? votes[recipe.Id] : "none";
+                                var score = recipe.Votes.Count(v => v.IsUpvote) - recipe.Votes.Count(v => !v.IsUpvote);
+                            }
+                            <button class="btn btn-sm py-0 px-1 vote-btn @(myVote == "up" ? "btn-warning" : "btn-outline-secondary")"
+                                    data-recipe-id="@recipe.Id" data-direction="up">
+                                ▲
+                            </button>
+                            <span class="fw-bold vote-score" data-recipe-id="@recipe.Id">@score</span>
+                            <button class="btn btn-sm py-0 px-1 vote-btn @(myVote == "down" ? "btn-primary" : "btn-outline-secondary")"
+                                    data-recipe-id="@recipe.Id" data-direction="down">
+                                ▼
+                            </button>
+                        </div>
+                        <div>
+                            <small class="text-muted me-2">👤 @recipe.User.FullName</small>
+                            <a asp-action="Details" asp-route-id="@recipe.Id" class="btn btn-sm btn-outline-primary">Xem</a>
+                        </div>
                     </div>
                 </div>
             </div>
         }
     </div>
+}
+<form id="vote-form" class="d-none">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="vote-logged-in" value="@(User.Identity != null && User.Identity.IsAuthenticated ? "1" : "0")" />
+</form>
+
+@section Scripts {
+    <script src="~/js/recipe-list-vote.js" asp-append-version="true"></script>
 }
